@@ -115,7 +115,7 @@ class GithubOrganization(models.Model):
     def _compute_organization_serie_qty(self):
         for organization in self:
             organization.organization_serie_qty =\
-            len(organization.organization_serie_ids)
+                len(organization.organization_serie_ids)
 
     # Action section
     @api.multi

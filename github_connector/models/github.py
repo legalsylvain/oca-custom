@@ -4,6 +4,8 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 
+from openerp import exceptions, _
+
 from requests.auth import HTTPBasicAuth
 import requests
 import json

@@ -140,6 +140,7 @@ class GithubRepository(models.Model):
 
     @api.multi
     def button_sync_branch(self):
+        github_branch = self.get_github_for('repository_branches')
         branch_obj = self.env['github.repository.branch']
         for repository in self:
             branch_ids = []
@@ -147,8 +148,7 @@ class GithubRepository(models.Model):
                 repository.organization_id.organization_serie_ids\
                 .mapped('name')
 
-            for data in self.get_datalist_from_github(
-                    'repository_branches', [repository.github_login]):
+            for data in github_branch.list([repository.github_login]):
                 # We don't use get_from_id_or_create because repository
                 # branches does not have any ids. (very basic object in the
                 # Github API)
