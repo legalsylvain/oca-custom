@@ -14,7 +14,11 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <field name="repository_id"/>
                 <field name="organization_id"/>
                 <field name="organization_serie_id"/>
+                <field name="state"/>
                 <filter string="Repository" context="{'group_by' : 'repository_id'}"/>
+                <filter string="To Download" name="to_download" domain="[('state','=', 'to_download')]" />
+                <filter string="To Analyze" name="to_analyze" domain="[('state','=', 'to_analyze')]" />
+                <filter string="Analyzed" name="analyzed" domain="[('state','=', 'analyzed')]" />
             </search>
         </field>
     </record>
@@ -24,7 +28,15 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="arch" type="xml">
             <tree>
                 <field name="complete_name"/>
+                <field name="mb_size" attrs="{'invisible': [('size', '=', 0)]}" sum="Total"/>
+                <field name="size" invisible="1"/>
                 <field name="repository_id" invisible="1"/>
+                <field name="last_download_date"/>
+                <field name="last_analyze_date"/>
+                <field name="state"/>
+                <button name="button_download_code" type="object" states="to_download" string="Download" icon="STOCK_SAVE"/>
+                <button name="button_download_code" type="object" states="to_analyze,analyzed" string="Update" icon="STOCK_REFRESH"/>
+                <button name="button_analyze_code" type="object" states="to_analyze" string="Analyze" icon="STOCK_EXECUTE"/>
             </tree>
         </field>
     </record>
@@ -34,6 +46,11 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="arch" type="xml">
             <form>
                 <header>
+                    <button name="button_download_code" type="object" states="to_download" string="Download Source Code" icon="STOCK_SAVE" class="oe_highlight"/>
+                    <button name="button_download_code" type="object" states="to_analyze,analyzed" string="Update Source Code" icon="STOCK_REFRESH"/>
+                    <button name="button_analyze_code" type="object" states="to_analyze" string="Analyze Source Code" icon="STOCK_EXECUTE" class="oe_highlight"/>
+                    <button name="button_analyze_code" type="object" states="analyzed" string="Update Source Code Analyzis" icon="STOCK_EXECUTE"/>
+                    <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
@@ -43,7 +60,15 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                     </div>
                     <div class="oe_clear"/>
                     <group col="4">
+                        <field name="size" />
+                        <field name="mb_size" />
                         <field name="repository_id"/>
+                        <field name="organization_id"/>
+                        <field name="organization_serie_id"/>
+                        <newline />
+                        <field name="local_path" colspan="4"/>
+                        <field name="last_download_date"/>
+                        <field name="last_analyze_date"/>
                     </group>
                     <notebook>
                     </notebook>

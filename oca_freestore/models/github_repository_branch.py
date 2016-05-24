@@ -160,7 +160,7 @@ class GithubRepositoryBranch(models.Model):
     # Action Section
     @api.multi
     def button_download_code(self):
-        return self._download_code()
+        return self._download_code() 
 
     @api.multi
     def button_update_code(self):

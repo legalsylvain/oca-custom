@@ -17,5 +17,7 @@ from . import github_comment
 
 from . import wizard_load_github_model
 
+from . import wizard_download_analyze_branch
+
 from . import wizard_update_from_github
 from . import wizard_update_company_author
