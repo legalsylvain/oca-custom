@@ -61,6 +61,15 @@ class GithubOrganization(models.Model):
         string='Team Quantity', compute='_compute_team_qty',
         store=True)
 
+    organization_serie_ids = fields.One2many(
+        string='Organization Series',
+        comodel_name='github.organization.serie',
+        inverse_name='organization_id')
+
+    organization_serie_qty = fields.Integer(
+        string='Series Quantity', compute='_compute_organization_serie_qty',
+        store=True)
+
     # Overloadable Section
     @api.model
     def get_odoo_data_from_github(self, data):
@@ -93,15 +102,20 @@ class GithubOrganization(models.Model):
     @api.depends('repository_ids.organization_id')
     def _compute_repository_qty(self):
         for organization in self:
-            organization.repository_qty =\
-                len(organization.repository_ids)
+            organization.repository_qty = len(organization.repository_ids)
 
     @api.multi
     @api.depends('team_ids.organization_id')
     def _compute_team_qty(self):
         for organization in self:
-            organization.team_qty =\
-                len(organization.team_ids)
+            organization.team_qty = len(organization.team_ids)
+
+    @api.multi
+    @api.depends('organization_serie_ids.organization_id')
+    def _compute_organization_serie_qty(self):
+        for organization in self:
+            organization.organization_serie_qty =\
+            len(organization.organization_serie_ids)
 
     # Action section
     @api.multi
@@ -141,8 +155,3 @@ class GithubOrganization(models.Model):
                     data, {'organization_id': organization.id})
                 team_ids.append(team.id)
             organization.team_ids = team_ids
-
-#    organization_serie_ids = fields.One2many(
-#        string='Organization Series',
-#        comodel_name='github.organization.serie',
-#        inverse_name='organization_id')

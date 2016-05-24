@@ -31,19 +31,37 @@ Once installed, you have to:
 Usage
 =====
 
-To recover information from github, you have to to :
+To recover information from github, you have to:
+
 * go to 'Github' / 'Settings' / 'Sync Object'
 * Select the object type you want to synchronize and its github name
 
 .. image:: /github_connector/static/description/sync_organization.png
 
 
+Optionaly, once organization created, you have to create series of your project
 
-# TODO FIXME make real recursion.
-* Check 'update Child Object' will update recursively the object.
+* Go to 'Github' / 'Organizations' / click on your organization / 'Organization Series' Tabbs
+.. image:: /github_connector/static/description/organization_series.png
+
+Reporting
+=========
+
+This module provides severals reporting.
+
+** Branches by Series**
+
+.. image:: /github_connector/static/description/reporting_branches_by_serie.png
+
 
 Known issues / Roadmap
 ======================
+
+
+# TODO FIXME make real recursion.
+
+* Check 'update Child Object' will update recursively the object.
+
 
 
 Credits

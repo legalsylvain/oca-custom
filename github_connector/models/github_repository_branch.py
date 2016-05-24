@@ -28,6 +28,14 @@ class GithubRepository(models.Model):
         comodel_name='github.repository', string='Repository',
         required=True, select=True, readonly=True, ondelete='cascade')
 
+    organization_id = fields.Many2one(
+        comodel_name='github.organization', string='Organization',
+        related='repository_id.organization_id', store=True, readonly=True)
+
+    organization_serie_id = fields.Many2one(
+        comodel_name='github.organization.serie', string='Organization Serie',
+        compute='_compute_organization_serie_id', store=True)
+
     # Custom
     def create_or_update_from_name(self, repository_id, name):
         branch = self.search([
@@ -44,3 +52,12 @@ class GithubRepository(models.Model):
         for branch in self:
             branch.complete_name =\
                 branch.repository_id.name + '/' + branch.name
+
+    # Compute Section
+    @api.multi
+    @api.depends('organization_id', 'name')
+    def _compute_organization_serie_id(self):
+        for branch in self:
+            for serie in branch.organization_id.organization_serie_ids:
+                if serie.name == branch.name:
+                    branch.organization_serie_id = serie

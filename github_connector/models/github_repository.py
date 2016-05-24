@@ -117,6 +117,7 @@ class GithubRepository(models.Model):
     @api.multi
     def full_update(self):
         self.button_sync_issue()
+        self.button_sync_branch()
 
     # Action section
     @api.multi
@@ -142,19 +143,21 @@ class GithubRepository(models.Model):
         branch_obj = self.env['github.repository.branch']
         for repository in self:
             branch_ids = []
+            correct_series =\
+                repository.organization_id.organization_serie_ids\
+                .mapped('name')
+
             for data in self.get_datalist_from_github(
                     'repository_branches', [repository.github_login]):
                 # We don't use get_from_id_or_create because repository
                 # branches does not have any ids. (very basic object in the
                 # Github API)
-                if True: # branch_data['name'] in correct_series:
+                if data['name'] in correct_series:
                     branch = branch_obj.create_or_update_from_name(
                         repository.id, data['name'])
+                    branch_ids.append(branch.id)
                 else:
                     _logger.warning(
                         "the branch '%s'/'%s' has been ignored." % (
-                            repository.complete_name, data['name']))
-#                branch = branch_obj.get_from_id_or_create(
-#                    data, {'repository_id': repository.id})
-                branch_ids.append(branch.id)
+                            repository.name, data['name']))
             repository.branch_ids = branch_ids

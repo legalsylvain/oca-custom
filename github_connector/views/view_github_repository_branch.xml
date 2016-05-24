@@ -12,6 +12,8 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
             <search>
                 <field name="complete_name"/>
                 <field name="repository_id"/>
+                <field name="organization_id"/>
+                <field name="organization_serie_id"/>
                 <filter string="Repository" context="{'group_by' : 'repository_id'}"/>
             </search>
         </field>
